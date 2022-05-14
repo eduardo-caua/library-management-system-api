@@ -20,7 +20,7 @@ export class Tracking extends Model<Tracking> {
 
     @Column({
         type: DataType.ENUM,
-        values: ['IN', 'OUT'],
+        values: ['CHECK IN', 'CHECK OUT'],
         allowNull: false,
     })
     action: string;

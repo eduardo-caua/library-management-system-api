@@ -29,9 +29,9 @@ export class Book extends Model<Book> {
 
     @Column({
         type: DataType.ENUM,
-        values: ['IN', 'OUT'],
+        values: ['AVAILABLE', 'CHECKED-OUT'],
         allowNull: false,
-        defaultValue: 'IN',
+        defaultValue: 'AVAILABLE',
     })
     status: string;
 
