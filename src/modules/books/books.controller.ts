@@ -1,4 +1,4 @@
-import { Controller, Body, Post, Get, Put, Delete, Param, UnprocessableEntityException } from '@nestjs/common';
+import { Controller, Body, Post, Get, Put, Delete, Patch, Param, UnprocessableEntityException } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { TrackingService } from '../tracking/tracking.service';
 import { BookDto } from './dto/book.dto';
@@ -46,13 +46,32 @@ export class BooksController {
         let result: [Number];
 
         if (tracking.action == 'IN') {
-            result = await this.booksService.checkIn(bookId, tracking.dueDate);
+            result = await this.booksService.checkIn(bookId);
         } else {
             result = await this.booksService.checkOut(bookId, tracking.dueDate);
         }
 
         if (result) {
             return await this.trackingService.create(tracking);
+        }
+
+        throw new UnprocessableEntityException();
+    }
+
+    @Patch('/:bookId/tracking/:id')
+    async updateTracking(@Param('bookId') bookId: number, @Param('id') id: number, @Body() tracking: BookTrackingDto) {
+        let result: [Number];
+
+        console.log(tracking);
+
+        if (tracking.action == 'IN') {
+            result = await this.booksService.checkIn(bookId);
+        } else {
+            result = await this.booksService.checkOut(bookId, tracking.dueDate);
+        }
+
+        if (result) {
+            return await this.trackingService.update(id, tracking);
         }
 
         throw new UnprocessableEntityException();

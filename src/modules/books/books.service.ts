@@ -33,10 +33,10 @@ export class BooksService {
     }
 
     async checkOut(id: number, dueDate: string): Promise<[Number]> {
-        return await this.bookRepository.update<Book>({ status: 'OUT', dueDate: dueDate }, { where: { id, status: 'IN' } });
+        return await this.bookRepository.update<Book>({ status: 'OUT', dueDate: dueDate }, { where: { id } });
     }
 
-    async checkIn(id: number, dueDate: string): Promise<[Number]> {
-        return await this.bookRepository.update<Book>({ status: 'IN', dueDate: null }, { where: { id, status: 'OUT' } });
+    async checkIn(id: number): Promise<[Number]> {
+        return await this.bookRepository.update<Book>({ status: 'IN', dueDate: null }, { where: { id } });
     }
 }

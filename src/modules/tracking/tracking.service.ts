@@ -3,6 +3,7 @@ import { Tracking } from './tracking.entity';
 import { TrackingDto } from './dto/tracking.dto';
 import { TRACKING_REPOSITORY } from '../../core/constants';
 import { Customer } from '../customers/customer.entity';
+import { Book } from '../books/book.entity';
 
 @Injectable()
 export class TrackingService {
@@ -20,6 +21,7 @@ export class TrackingService {
     async findById(id: number): Promise<Tracking> {
         return await this.trackingRepository.findOne<Tracking>({ 
             include:[
+                {model: Book, required: true},
                 {model: Customer, required: true},
             ],
             where: { id }
@@ -42,9 +44,5 @@ export class TrackingService {
 
     async update(id: number, tracking: TrackingDto): Promise<[Number]> {
         return await this.trackingRepository.update<Tracking>(tracking, { where: { id } });
-    }
-
-    async delete(id: number): Promise<Boolean> {
-        return await this.trackingRepository.destroy<Tracking>({ where: { id } }) == 1;
     }
 }
