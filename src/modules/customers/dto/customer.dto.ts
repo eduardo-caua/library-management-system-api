@@ -1,5 +1,5 @@
 export class CustomerDto {
     readonly name: string;
-    readonly address: string;
+    readonly email: string;
     readonly phone: string;
 }

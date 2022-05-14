@@ -9,7 +9,5 @@ export interface IDatabaseConfigAttributes {
 }
 
 export interface IDatabaseConfig {
-    development: IDatabaseConfigAttributes;
-    test: IDatabaseConfigAttributes;
-    production: IDatabaseConfigAttributes;
+    environment: IDatabaseConfigAttributes;
 }

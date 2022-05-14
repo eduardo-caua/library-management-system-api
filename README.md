@@ -3,7 +3,7 @@
 
 ## Features
 * API for CRUD of a books (managing title, author, isbn, description)
-* API for CRUD of a customer (managing name, address, phone)
+* API for CRUD of a customer (managing name, email, phone)
 * API to check in and check out a book
 * API to track state changes for a book
 
