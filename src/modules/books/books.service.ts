@@ -1,17 +1,33 @@
 import { Injectable, Inject } from '@nestjs/common';
+import { Op } from 'sequelize';
+import { BOOK_REPOSITORY } from '../../core/constants';
 import { Book } from './book.entity';
 import { BookDto } from './dto/book.dto';
-import { BOOK_REPOSITORY } from '../../core/constants';
+import { BooksDto } from './dto/books.dto';
 
 @Injectable()
 export class BooksService {
 
     constructor(@Inject(BOOK_REPOSITORY) private readonly bookRepository: typeof Book) { }
 
-    async find(): Promise<Book[]> {
-        return await this.bookRepository.findAll<Book>({
-            order: [['title', 'ASC']]
-        });
+    async find(title: string, offset: number, limit: number): Promise<BooksDto> {
+        let options: object = {
+            limit: limit,
+            offset: offset,
+            order: [
+                ['title', 'ASC']
+            ]
+        };
+
+        if (title) {
+            options['where'] = {
+                title:{
+                    [Op.iLike]: `%${title}%`
+                }
+            };
+        }
+
+        return await this.bookRepository.findAndCountAll<Book>(options);
     }
 
     async findOneById(id: number): Promise<Book> {
@@ -20,6 +36,10 @@ export class BooksService {
 
     async findOneByIdAndStatus(id: number, status: string): Promise<Book> {
         return await this.bookRepository.findOne<Book>({ where: { id, status } });
+    }
+
+    async count(): Promise<Number> {
+        return await this.bookRepository.count();
     }
 
     async create(book: BookDto): Promise<Book> {
@@ -35,7 +55,7 @@ export class BooksService {
     }
 
     async checkOut(id: number, dueDate: string): Promise<[Number]> {
-        return await this.bookRepository.update<Book>({ status: 'CHECKED-OUT', dueDate: dueDate }, { where: { id } });
+        return await this.bookRepository.update<Book>({ status: 'CHECKED OUT', dueDate: dueDate }, { where: { id } });
     }
 
     async checkIn(id: number): Promise<[Number]> {

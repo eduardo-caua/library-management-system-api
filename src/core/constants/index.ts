@@ -2,3 +2,5 @@ export const SEQUELIZE = 'SEQUELIZE';
 export const BOOK_REPOSITORY = 'BOOK_REPOSITORY';
 export const TRACKING_REPOSITORY = 'TRACKING_REPOSITORY';
 export const CUSTOMER_REPOSITORY = 'CUSTOMER_REPOSITORY';
+export const OFFSET = 0;
+export const LIMIT = 5;

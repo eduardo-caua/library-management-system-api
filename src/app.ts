@@ -1,3 +1,4 @@
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
@@ -6,12 +7,11 @@ import {
   ValidationPipe,
   VersioningType,
 } from '@nestjs/common';
-
 import helmet from 'helmet';
 
 export class App {
   public static async get(): Promise<INestApplication> {
-    const app = await NestFactory.create(AppModule);
+    const app = await NestFactory.create<NestExpressApplication>(AppModule);
     app.enableCors();
     app.use(helmet());
     app.useGlobalPipes(
