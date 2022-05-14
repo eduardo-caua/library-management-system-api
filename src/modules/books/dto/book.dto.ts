@@ -4,4 +4,5 @@ export class BookDto {
     readonly isbn: string;
     readonly description: string;
     readonly status: string;
+    readonly dueDate?: string;
 }

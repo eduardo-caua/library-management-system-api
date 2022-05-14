@@ -1,8 +1,6 @@
-import { Controller, Body, Post, Get, Put, Patch, Delete, Param, UnprocessableEntityException, Logger } from '@nestjs/common';
+import { Controller, Body, Get, Patch, Delete, Param } from '@nestjs/common';
 import { TrackingService } from './tracking.service';
 import { TrackingDto } from '../tracking/dto/tracking.dto';
-
-const logger = new Logger('NestApplication');
 
 @Controller('tracking')
 export class TrackingController {
