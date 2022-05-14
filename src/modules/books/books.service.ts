@@ -8,12 +8,10 @@ export class BooksService {
 
     constructor(@Inject(BOOK_REPOSITORY) private readonly bookRepository: typeof Book) { }
 
-    async create(book: BookDto): Promise<Book> {
-        return await this.bookRepository.create<Book>(book);
-    }
-
     async find(): Promise<Book[]> {
-        return await this.bookRepository.findAll<Book>();
+        return await this.bookRepository.findAll<Book>({
+            order: [['title', 'ASC']]
+        });
     }
 
     async findOneById(id: number): Promise<Book> {
@@ -22,6 +20,10 @@ export class BooksService {
 
     async findOneByIdAndStatus(id: number, status: string): Promise<Book> {
         return await this.bookRepository.findOne<Book>({ where: { id, status } });
+    }
+
+    async create(book: BookDto): Promise<Book> {
+        return await this.bookRepository.create<Book>(book);
     }
 
     async update(id: number, book: BookDto): Promise<[Number]> {
@@ -33,10 +35,10 @@ export class BooksService {
     }
 
     async checkOut(id: number, dueDate: string): Promise<[Number]> {
-        return await this.bookRepository.update<Book>({ status: 'OUT', dueDate: dueDate }, { where: { id } });
+        return await this.bookRepository.update<Book>({ status: 'CHECKED-OUT', dueDate: dueDate }, { where: { id } });
     }
 
     async checkIn(id: number): Promise<[Number]> {
-        return await this.bookRepository.update<Book>({ status: 'IN', dueDate: null }, { where: { id } });
+        return await this.bookRepository.update<Book>({ status: 'AVAILABLE', dueDate: null }, { where: { id } });
     }
 }

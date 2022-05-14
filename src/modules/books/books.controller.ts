@@ -45,7 +45,7 @@ export class BooksController {
     async createTracking(@Param('bookId') bookId: number, @Body() tracking: BookTrackingDto) {
         let result: [Number];
 
-        if (tracking.action == 'IN') {
+        if (tracking.action == 'CHECK IN') {
             result = await this.booksService.checkIn(bookId);
         } else {
             result = await this.booksService.checkOut(bookId, tracking.dueDate);
@@ -64,7 +64,7 @@ export class BooksController {
 
         console.log(tracking);
 
-        if (tracking.action == 'IN') {
+        if (tracking.action == 'CHECK IN') {
             result = await this.booksService.checkIn(bookId);
         } else {
             result = await this.booksService.checkOut(bookId, tracking.dueDate);
