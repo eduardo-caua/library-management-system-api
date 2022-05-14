@@ -1,23 +1,41 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Customer } from './customer.entity';
 import { CustomerDto } from './dto/customer.dto';
+import { CustomersDto } from './dto/customers.dto';
 import { CUSTOMER_REPOSITORY } from '../../core/constants';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class CustomersService {
 
     constructor(@Inject(CUSTOMER_REPOSITORY) private readonly customerRepository: typeof Customer) { }
 
-    async create(customer: CustomerDto): Promise<Customer> {
-        return await this.customerRepository.create<Customer>(customer);
-    }
+    async find(name:string, offset:number, limit:number): Promise<CustomersDto> {
+        let options:object = {
+            limit: limit,
+            offset: offset,
+            order: [
+                ['name', 'ASC']
+            ]
+        };
 
-    async find(): Promise<Customer[]> {
-        return await this.customerRepository.findAll<Customer>();
+        if (name) {
+            options['where'] = {
+                name:{
+                    [Op.iLike]: `%${name}%`
+                }
+            };
+        }
+
+        return await this.customerRepository.findAndCountAll<Customer>(options);
     }
 
     async findOneById(id: number): Promise<Customer> {
         return await this.customerRepository.findOne<Customer>({ where: { id } });
+    }
+
+    async create(customer: CustomerDto): Promise<Customer> {
+        return await this.customerRepository.create<Customer>(customer);
     }
 
     async update(id: number, customer: CustomerDto): Promise<[Number]> {

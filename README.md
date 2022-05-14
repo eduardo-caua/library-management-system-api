@@ -9,9 +9,10 @@
 
 ## Next Steps
 - Features
+  - Status book filter
+  - Download book report
   - Allow renew due date to return a book
 - Architecture
-  - Tracking field in Book entity
   - Apply swagger library
   - Error handler (using interceptor annotation)
   - Define table attributes limits (data size)

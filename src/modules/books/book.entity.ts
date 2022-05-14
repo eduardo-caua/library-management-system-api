@@ -29,7 +29,7 @@ export class Book extends Model<Book> {
 
     @Column({
         type: DataType.ENUM,
-        values: ['AVAILABLE', 'CHECKED-OUT'],
+        values: ['AVAILABLE', 'CHECKED OUT'],
         allowNull: false,
         defaultValue: 'AVAILABLE',
     })
