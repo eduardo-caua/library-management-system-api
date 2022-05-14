@@ -12,7 +12,7 @@ export class Customer extends Model<Customer> {
         type: DataType.STRING,
         allowNull: false,
     })
-    address: string;
+    email: string;
 
     @Column({
         type: DataType.STRING,
