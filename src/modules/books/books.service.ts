@@ -32,11 +32,11 @@ export class BooksService {
         return await this.bookRepository.destroy<Book>({ where: { id } }) == 1;
     }
 
-    async checkOut(id: number): Promise<[Number]> {
-        return await this.bookRepository.update<Book>({ status: 'OUT' }, { where: { id, status: 'IN' } });
+    async checkOut(id: number, dueDate: string): Promise<[Number]> {
+        return await this.bookRepository.update<Book>({ status: 'OUT', dueDate: dueDate }, { where: { id, status: 'IN' } });
     }
 
-    async checkIn(id: number): Promise<[Number]> {
-        return await this.bookRepository.update<Book>({ status: 'IN' }, { where: { id, status: 'OUT' } });
+    async checkIn(id: number, dueDate: string): Promise<[Number]> {
+        return await this.bookRepository.update<Book>({ status: 'IN', dueDate: null }, { where: { id, status: 'OUT' } });
     }
 }

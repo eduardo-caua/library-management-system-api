@@ -1,10 +1,8 @@
-import { Controller, Body, Post, Get, Put, Patch, Delete, Param, UnprocessableEntityException, Logger } from '@nestjs/common';
+import { Controller, Body, Post, Get, Put, Delete, Param, UnprocessableEntityException } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { TrackingService } from '../tracking/tracking.service';
-import { BookDto } from '../books/dto/book.dto';
-import { TrackingDto } from '../tracking/dto/tracking.dto';
-
-const logger = new Logger('NestApplication');
+import { BookDto } from './dto/book.dto';
+import { BookTrackingDto } from './dto/bookTracking.dto';
 
 @Controller('books')
 export class BooksController {
@@ -44,13 +42,13 @@ export class BooksController {
     }
 
     @Post('/:bookId/tracking')
-    async createTracking(@Param('bookId') bookId: number, @Body() tracking: TrackingDto) {
+    async createTracking(@Param('bookId') bookId: number, @Body() tracking: BookTrackingDto) {
         let result: [Number];
 
         if (tracking.action == 'IN') {
-            result = await this.booksService.checkIn(bookId);
+            result = await this.booksService.checkIn(bookId, tracking.dueDate);
         } else {
-            result = await this.booksService.checkOut(bookId);
+            result = await this.booksService.checkOut(bookId, tracking.dueDate);
         }
 
         if (result) {

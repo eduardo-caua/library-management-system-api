@@ -34,4 +34,10 @@ export class Book extends Model<Book> {
         defaultValue: 'IN',
     })
     status: string;
+
+    @Column({
+        type: DataType.DATEONLY,
+        allowNull: true,
+    })
+    dueDate: string;
 }

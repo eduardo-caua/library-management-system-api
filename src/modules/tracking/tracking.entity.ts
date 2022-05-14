@@ -19,12 +19,6 @@ export class Tracking extends Model<Tracking> {
     customer: Customer;
 
     @Column({
-        type: DataType.DATEONLY,
-        allowNull: false,
-    })
-    dueDate: string;
-
-    @Column({
         type: DataType.ENUM,
         values: ['IN', 'OUT'],
         allowNull: false,
