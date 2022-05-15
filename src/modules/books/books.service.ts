@@ -1,9 +1,10 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { Op } from 'sequelize';
+import { Model, Op, QueryTypes, Sequelize } from 'sequelize';
 import { BOOK_REPOSITORY, DELAYED, CHECKED_OUT, AVAILABLE } from '../../core/constants';
 import { Book } from './book.entity';
 import { BookDto } from './dto/book.dto';
 import { BooksDto } from './dto/books.dto';
+import { BooksMetricsDto } from './dto/booksMetrics.dto';
 
 @Injectable()
 export class BooksService {
@@ -70,6 +71,22 @@ export class BooksService {
         return await this.bookRepository.findAll<Book>(options);
     }
 
+    async findMetrics(): Promise<BooksMetricsDto> {
+        const query = `SELECT 
+        CAST((COUNT(*) FILTER (WHERE status = 'AVAILABLE')) AS INTEGER) AS available,
+        CAST((COUNT(*) FILTER (WHERE status = 'CHECKED OUT' AND "dueDate" >= NOW())) AS INTEGER) AS checkedOut,
+        CAST((COUNT(*) FILTER (WHERE status = 'CHECKED OUT' AND "dueDate" < NOW())) AS INTEGER) AS delayed
+        FROM public."Books"`;
+
+        return await this.bookRepository.sequelize.query<BooksMetricsDto>(
+            query,
+            { 
+                type: QueryTypes.SELECT,
+                plain: true
+            },
+        );
+    }
+
     async findOneById(id: number): Promise<Book> {
         return await this.bookRepository.findOne<Book>({ where: { id } });
     }
@@ -77,11 +94,7 @@ export class BooksService {
     async findOneByIdAndStatus(id: number, status: string): Promise<Book> {
         return await this.bookRepository.findOne<Book>({ where: { id, status } });
     }
-
-    async count(): Promise<Number> {
-        return await this.bookRepository.count();
-    }
-
+    
     async create(book: BookDto): Promise<Book> {
         return await this.bookRepository.create<Book>(book);
     }

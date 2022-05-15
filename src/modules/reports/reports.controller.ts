@@ -3,6 +3,7 @@ import { BooksService } from '../books/books.service';
 import { ApiOperation, ApiProduces, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Parser as CsvParser} from 'json2csv';
 import { Response } from 'express';
+import { BooksMetricsDto } from '../books/dto/booksMetrics.dto';
 
 @ApiTags('Reports')
 @Controller('reports')
@@ -29,5 +30,13 @@ export class ReportsController {
             .set('Content-Disposition', `attachment; filename=books-report-${new Date().toISOString()}.csv`)
             .status(200)
             .end(csv);
+    }
+
+    @Get('/books-metrics')
+    @HttpCode(HttpStatus.OK)
+    @ApiOperation({ summary: 'Find for books metrics' })
+    @ApiResponse({ status: 200, description: 'Successfully requested.', type: BooksMetricsDto })
+    async findBooksMetrics() {
+        return await this.booksService.findMetrics();
     }
 }
