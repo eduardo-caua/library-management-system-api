@@ -1,7 +1,7 @@
 import { Controller, Body, Post, Get, Put, Delete, Patch, Param, UnprocessableEntityException, HttpCode, HttpStatus, Query } from '@nestjs/common';
 import { TrackingService } from '../tracking/tracking.service';
 import { BookTrackingDto } from './dto/bookTracking.dto';
-import { OFFSET, LIMIT }  from '../../core/constants';
+import { OFFSET, LIMIT, CHECK_IN }  from '../../core/constants';
 import { BooksService } from './books.service';
 import { BookDto } from './dto/book.dto';
 import { BooksDto } from './dto/books.dto';
@@ -83,7 +83,7 @@ export class BooksController {
     async createTracking(@Param('bookId') bookId: number, @Body() tracking: BookTrackingDto) {
         let result: [Number];
 
-        if (tracking.action == 'CHECK IN') {
+        if (tracking.action == CHECK_IN) {
             result = await this.booksService.checkIn(bookId);
         } else {
             result = await this.booksService.checkOut(bookId, tracking.dueDate);
@@ -104,7 +104,7 @@ export class BooksController {
     async updateTracking(@Param('bookId') bookId: number, @Param('id') id: number, @Body() tracking: BookTrackingDto) {
         let result: [Number];
 
-        if (tracking.action == 'CHECK IN') {
+        if (tracking.action == CHECK_IN) {
             result = await this.booksService.checkIn(bookId);
         } else {
             result = await this.booksService.checkOut(bookId, tracking.dueDate);

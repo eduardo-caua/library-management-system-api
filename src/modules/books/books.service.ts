@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Op } from 'sequelize';
-import { BOOK_REPOSITORY } from '../../core/constants';
+import { BOOK_REPOSITORY, DELAYED, CHECKED_OUT, AVAILABLE } from '../../core/constants';
 import { Book } from './book.entity';
 import { BookDto } from './dto/book.dto';
 import { BooksDto } from './dto/books.dto';
@@ -28,7 +28,14 @@ export class BooksService {
         }
 
         if (status) {
-            options['where']['status'] = status;
+            if (status == DELAYED) {
+                options['where']['status'] = CHECKED_OUT;
+                options['where']['dueDate'] = {
+                    [Op.lte]: new Date()
+                }
+            } else {
+                options['where']['status'] = status;
+            }
         }
 
         return await this.bookRepository.findAndCountAll<Book>(options);
@@ -59,10 +66,10 @@ export class BooksService {
     }
 
     async checkOut(id: number, dueDate: string): Promise<[Number]> {
-        return await this.bookRepository.update<Book>({ status: 'CHECKED OUT', dueDate: dueDate }, { where: { id } });
+        return await this.bookRepository.update<Book>({ status: CHECKED_OUT, dueDate: dueDate }, { where: { id } });
     }
 
     async checkIn(id: number): Promise<[Number]> {
-        return await this.bookRepository.update<Book>({ status: 'AVAILABLE', dueDate: null }, { where: { id } });
+        return await this.bookRepository.update<Book>({ status: AVAILABLE, dueDate: null }, { where: { id } });
     }
 }
