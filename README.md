@@ -7,13 +7,15 @@
 * API to check in and check out a book
 * API to track state changes for a book
 
+## Documentation
+* Featured by Open API specification (Swagger) you can see the documentation accessing /docs endpoint.
+
 ## Next Steps
 - Features
   - Status book filter
   - Download book report
   - Allow renew due date to return a book
 - Architecture
-  - Apply swagger library
   - Error handler (using interceptor annotation)
   - Define table attributes limits (data size)
   - Health-check endpoint
@@ -21,7 +23,7 @@
   - Handle fail database connection using a connection pool
 - Security
   - Apply request body data validation to prevent inject
-  - Change the primary key data type to UUID preventing force update
+  - Change the primary key data type to UUID preventing dumb attacks
 
 ## Installation
 
