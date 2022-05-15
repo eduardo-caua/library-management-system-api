@@ -12,7 +12,6 @@
 
 ## Next Steps
 - Features
-  - Download book report
   - Allow renew due date to return a book
 - Architecture
   - Error handler (using interceptor annotation)

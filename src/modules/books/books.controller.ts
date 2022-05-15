@@ -19,10 +19,10 @@ export class BooksController {
     @ApiOperation({ summary: 'Find for books' })
     @ApiResponse({ status: 200, description: 'Successfully requested.', type: BooksDto })
     async findBooks(
-        @Query('_offset') offset: number,
-        @Query('_limit') limit: number,
-        @Query('title') title: string,
-        @Query('status') status: string,
+        @Query('_offset') offset?: number,
+        @Query('_limit') limit?: number,
+        @Query('title') title?: string,
+        @Query('status') status?: string,
     ) {
         return await this.booksService.find(title, status, offset || OFFSET, limit || LIMIT);
     }
@@ -65,8 +65,8 @@ export class BooksController {
     @ApiResponse({ status: 200, description: 'Successfully requested.', type: BooksTrackingDto })
     async findTrackingByBookId(
         @Param('bookId') bookId: number,
-        @Query('_offset') offset: number,
-        @Query('_limit') limit: number,
+        @Query('_offset') offset?: number,
+        @Query('_limit') limit?: number,
     ) {
         const tracking: BooksTrackingDto = { 
             book: await this.booksService.findOneById(bookId), 
