@@ -6,6 +6,7 @@
 * API for CRUD of a customer (managing name, email, phone)
 * API to check in and check out a book
 * API to track state changes for a book
+* API to download books report
 
 ## Documentation
 * Featured by Open API specification (Swagger) you can see the documentation accessing /docs endpoint.
