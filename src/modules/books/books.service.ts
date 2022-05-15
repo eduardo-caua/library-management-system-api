@@ -32,7 +32,7 @@ export class BooksService {
             if (status == DELAYED) {
                 options['where']['status'] = CHECKED_OUT;
                 options['where']['dueDate'] = {
-                    [Op.lte]: new Date()
+                    [Op.lt]: new Date()
                 }
             } else {
                 options['where']['status'] = status;
@@ -74,8 +74,8 @@ export class BooksService {
     async findMetrics(): Promise<BooksMetricsDto> {
         const query = `SELECT 
         CAST((COUNT(*) FILTER (WHERE status = 'AVAILABLE')) AS INTEGER) AS available,
-        CAST((COUNT(*) FILTER (WHERE status = 'CHECKED OUT' AND "dueDate" >= NOW())) AS INTEGER) AS checkedOut,
-        CAST((COUNT(*) FILTER (WHERE status = 'CHECKED OUT' AND "dueDate" < NOW())) AS INTEGER) AS delayed
+        CAST((COUNT(*) FILTER (WHERE status = 'CHECKED OUT' AND "dueDate"::date >= NOW()::date)) AS INTEGER) AS checkedOut,
+        CAST((COUNT(*) FILTER (WHERE status = 'CHECKED OUT' AND "dueDate"::date < NOW()::date)) AS INTEGER) AS delayed
         FROM public."Books"`;
 
         return await this.bookRepository.sequelize.query<BooksMetricsDto>(
