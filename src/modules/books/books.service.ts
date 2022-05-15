@@ -41,6 +41,35 @@ export class BooksService {
         return await this.bookRepository.findAndCountAll<Book>(options);
     }
 
+    async findAll(title: string, status: string): Promise<BookDto[]> {
+        let options: object = {
+            order: [
+                ['title', 'ASC']
+            ]
+        };
+
+        options['where'] = {};
+
+        if (title) {
+            options['where']['title'] = {
+                [Op.iLike]: `%${title}%`
+            };
+        }
+
+        if (status) {
+            if (status == DELAYED) {
+                options['where']['status'] = CHECKED_OUT;
+                options['where']['dueDate'] = {
+                    [Op.lte]: new Date()
+                }
+            } else {
+                options['where']['status'] = status;
+            }
+        }
+
+        return await this.bookRepository.findAll<Book>(options);
+    }
+
     async findOneById(id: number): Promise<Book> {
         return await this.bookRepository.findOne<Book>({ where: { id } });
     }

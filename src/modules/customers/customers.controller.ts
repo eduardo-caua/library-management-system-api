@@ -15,9 +15,9 @@ export class CustomersController {
     @ApiOperation({ summary: 'Find for customers' })
     @ApiResponse({ status: 200, description: 'Successfully requested.', type: CustomersDto })
     async findCustomers(
-        @Query('_offset') offset: number,
-        @Query('_limit') limit: number,
-        @Query('name') name: string
+        @Query('_offset') offset?: number,
+        @Query('_limit') limit?: number,
+        @Query('name') name?: string
     ) {
         return await this.customersService.find(name, offset || OFFSET, limit || LIMIT);
     }
