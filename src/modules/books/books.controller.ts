@@ -21,9 +21,10 @@ export class BooksController {
     async findBooks(
         @Query('_offset') offset: number,
         @Query('_limit') limit: number,
-        @Query('title') title: string
+        @Query('title') title: string,
+        @Query('status') status: string,
     ) {
-        return await this.booksService.find(title, offset || OFFSET, limit || LIMIT);
+        return await this.booksService.find(title, status, offset || OFFSET, limit || LIMIT);
     }
 
     @Get('/:id')

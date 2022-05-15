@@ -10,7 +10,7 @@ export class BooksService {
 
     constructor(@Inject(BOOK_REPOSITORY) private readonly bookRepository: typeof Book) { }
 
-    async find(title: string, offset: number, limit: number): Promise<BooksDto> {
+    async find(title: string, status: string, offset: number, limit: number): Promise<BooksDto> {
         let options: object = {
             limit: limit,
             offset: offset,
@@ -19,12 +19,16 @@ export class BooksService {
             ]
         };
 
+        options['where'] = {};
+
         if (title) {
-            options['where'] = {
-                title:{
-                    [Op.iLike]: `%${title}%`
-                }
+            options['where']['title'] = {
+                [Op.iLike]: `%${title}%`
             };
+        }
+
+        if (status) {
+            options['where']['status'] = status;
         }
 
         return await this.bookRepository.findAndCountAll<Book>(options);
