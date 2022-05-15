@@ -12,7 +12,6 @@
 
 ## Next Steps
 - Features
-  - Status book filter
   - Download book report
   - Allow renew due date to return a book
 - Architecture
