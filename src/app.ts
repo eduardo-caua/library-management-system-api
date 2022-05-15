@@ -9,6 +9,7 @@ import {
   VersioningType,
 } from '@nestjs/common';
 import helmet from 'helmet';
+import { GlobalExceptionFilter } from './core/filters/exceptions.filter';
 
 export class App {
   public static async get(): Promise<INestApplication> {
@@ -16,6 +17,7 @@ export class App {
 
     app.enableCors();
     app.use(helmet());
+    app.useGlobalFilters(new GlobalExceptionFilter());
     app.useGlobalPipes(
       new ValidationPipe({
         transform: true,
